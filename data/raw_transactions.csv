@@ -1,0 +1,11 @@
+transaction_id,customer_id,customer_name,transaction_date,amount,transaction_type,merchant,category,payment_method,location,status
+TXN001,C001,Nimal Perera,2026-01-05,2500.00,Debit,Keells,Groceries,Card,Colombo,Success
+TXN002,C002,Fathima Rizna,2026-01-06,150000.00,Credit,Salary,Income,Bank Transfer,Kandy,Success
+TXN003,C001,Nimal Perera,2026-01-07,3200.00,Debit,Dialog,Bills,Online,Colombo,Success
+TXN004,C003,Kamal Silva,2026-01-08,80000.00,Debit,Unknown,Transfer,Bank Transfer,Galle,Failed
+TXN005,C004,Ayesha Khan,2026-01-10,4500.00,Debit,Cargills,Groceries,Card,Colombo,Success
+TXN006,C002,Fathima Rizna,2026-01-12,12000.00,Debit,Daraz,Shopping,Online,Kandy,Success
+TXN007,C005,Arun Kumar,2026-01-15,60000.00,Debit,Unknown,Transfer,Bank Transfer,Jaffna,Success
+TXN008,C003,Kamal Silva,2026-01-18,2200.00,Debit,PickMe,Transport,Card,Galle,Success
+TXN009,C004,Ayesha Khan,2026-01-20,9000.00,Debit,Lanka IOC,Fuel,Card,Colombo,Success
+TXN010,C005,Arun Kumar,2026-01-22,500.00,Debit,Dialog,Bills,Online,Jaffna,Success
