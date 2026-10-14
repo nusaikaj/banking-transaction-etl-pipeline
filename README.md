@@ -17,6 +17,17 @@ The main goal of this project is to demonstrate ETL pipeline development, data c
 - Git
 - GitHub
 
+
+
+```
+
+## ETL Workflow
+
+1. **Extract:** Read raw banking transaction data from the CSV file.
+2. **Transform:** Clean and transform the data using Python and Pandas.
+3. **Load:** Store the processed data in a MySQL database.
+4. **Visualize:** Use Power BI to create dashboards and explore transaction insights.
+
 ## Project Folder Structure
 
 ```text
