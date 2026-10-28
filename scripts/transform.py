@@ -1,31 +1,27 @@
 import pandas as pd
 
+OPTIONAL_COLUMNS = ("customer_name", "transaction_type", "merchant", "category", "payment_method", "location", "status")
 
-def transform_data(df):
-    if df is None:
-        print("No data to transform.")
-        return None
-
-    df = df.drop_duplicates()
-
-    df["transaction_date"] = pd.to_datetime(df["transaction_date"], errors="coerce")
-    df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
-
-    df = df.dropna(
-        subset=["transaction_id", "customer_id", "transaction_date", "amount"]
-    )
-
-    df["merchant"] = df["merchant"].fillna("Unknown")
-    df["category"] = df["category"].fillna("Unknown")
-    df["payment_method"] = df["payment_method"].fillna("Unknown")
-    df["location"] = df["location"].fillna("Unknown")
-    df["status"] = df["status"].fillna("Unknown")
-
-    df["is_suspicious"] = df["amount"].apply(
-        lambda x: "Yes" if x >= 50000 else "No"
-    )
-
-    df.to_csv("data/cleaned_transactions.csv", index=False)
-
-    print("Data transformed successfully.")
-    return df
+def transform_data(df, suspicious_threshold=50000):
+    if df is None or df.empty:
+        raise ValueError("Cannot transform empty data")
+    if suspicious_threshold < 0:
+        raise ValueError("Threshold must not be negative")
+    cleaned = df.copy()
+    cleaned["transaction_id"] = cleaned["transaction_id"].astype("string").str.strip()
+    cleaned["customer_id"] = cleaned["customer_id"].astype("string").str.strip()
+    cleaned["transaction_date"] = pd.to_datetime(cleaned["transaction_date"], errors="coerce")
+    cleaned["amount"] = pd.to_numeric(cleaned["amount"], errors="coerce")
+    for col in OPTIONAL_COLUMNS:
+        if col not in cleaned:
+            cleaned[col] = "Unknown"
+        cleaned[col] = cleaned[col].fillna("Unknown").astype("string").str.strip().replace("", "Unknown")
+    required = ["transaction_id", "customer_id", "transaction_date", "amount"]
+    cleaned = cleaned.dropna(subset=required)
+    cleaned = cleaned.loc[(cleaned.transaction_id != "") & (cleaned.customer_id != "") & (cleaned.amount >= 0)].copy()
+    # Keep last occurrence by business identifier so reruns are deterministic.
+    cleaned = cleaned.drop_duplicates(subset=["transaction_id"], keep="last")
+    if cleaned.empty:
+        raise ValueError("No valid transactions after cleaning")
+    cleaned["is_suspicious"] = cleaned["amount"].ge(suspicious_threshold).map({True: "Yes", False: "No"})
+    return cleaned.reset_index(drop=True)

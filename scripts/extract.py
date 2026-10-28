@@ -1,14 +1,16 @@
+from pathlib import Path
 import pandas as pd
 
+REQUIRED_COLUMNS = {"transaction_id", "customer_id", "transaction_date", "amount"}
 
 def extract_data(file_path):
-    try:
-        df = pd.read_csv(file_path)
-        print("Data extracted successfully.")
-        return df
-    except FileNotFoundError:
-        print("Error: CSV file not found.")
-        return None
-    except Exception as e:
-        print(f"Extraction error: {e}")
-        return None
+    path = Path(file_path)
+    if not path.is_file():
+        raise FileNotFoundError(f"Input CSV not found: {path}")
+    df = pd.read_csv(path, dtype={"transaction_id": "string", "customer_id": "string"})
+    missing = REQUIRED_COLUMNS.difference(df.columns)
+    if missing:
+        raise ValueError(f"Missing required CSV columns: {', '.join(sorted(missing))}")
+    if df.empty:
+        raise ValueError("Input CSV contains no transactions")
+    return df
