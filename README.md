@@ -11,6 +11,21 @@ End-to-end portfolio ETL pipeline: **CSV → Pandas validation/transform → CSV
 - MySQL snapshot refresh inside a transaction, avoiding duplicate records on rerun (rather than `to_sql(if_exists="replace")` on every run)
 - Clear failure exit code, logging, unit tests, and 10k synthetic record generator
 
+## Power BI Dashboard Preview
+
+![Banking Transaction Analytics Dashboard](dashboard/dashboard.png)
+
+### Dashboard Features
+- 10,000 synthetic banking transactions
+- Total Transactions: 10,000
+- Total Amount: 497.42M
+- Average Transaction: 49.74K
+- Suspicious-Flagged Transactions: 4,963
+- Monthly Transaction Trends
+- Payment Method Distribution
+- Transaction Category Analysis
+- Interactive Date Range Filter
+
 ## Project layout
 ```text
 Banking-Transaction-ETL-Enhanced/
